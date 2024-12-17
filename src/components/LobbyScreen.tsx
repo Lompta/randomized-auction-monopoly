@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePeer } from '@/lib/peerContext';
 import GameSettings, { GameSettings as GameSettingsType } from '@/components/GameSettings';
 import { INITIAL_GAME_SETTINGS } from '@/lib/gameConstants';
+import { sanitizeUsername } from '@/lib/utils';
 
 interface LobbyScreenProps {
   onGameReady: (isHost: boolean, settings: GameSettingsType) => void;
@@ -38,6 +39,7 @@ const LobbyScreen = ({ onGameReady }: LobbyScreenProps) => {
     setError(null);
     
     try {
+      setPlayerName(sanitizeUsername(playerName));
       setPeerPlayerName(playerName);
       const roomCode = await hostGame();
       setJoinCode(roomCode);
@@ -63,6 +65,7 @@ const LobbyScreen = ({ onGameReady }: LobbyScreenProps) => {
     setError(null);
     
     try {
+      setPlayerName(sanitizeUsername(playerName));
       setPeerPlayerName(playerName);
       await joinGame(joinCode);
       setStatus('Connected!');
